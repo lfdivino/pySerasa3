@@ -1,0 +1,14 @@
+image: python:latest
+
+before_script:
+  - python -V
+  - pip install pytest
+
+stages:
+  - test
+
+test_job:
+  stage: test
+  script:
+    - echo "Running tests"
+    - pytest -v
