@@ -1,3 +1,6 @@
+import requests
+
+
 from .constantes import AMBIENTES
 
 
@@ -6,6 +9,7 @@ class Crednet:
         self._login = login
         self._password = password
         self._ambiente = ambiente
+        self._retorno_original = None
         if ambiente not in ('p', 'h'):
             self.errors.append(
                 "Os ambientes são 'p' de Produção(Padrão) ou "
@@ -28,3 +32,19 @@ class Crednet:
         string_dados = f"p={self._login}{self._password}        B49C      {num_documento:0>15}{tipo_pessoa_busca}C     FI                   S99SINIAN                               N                                                                                                                                                                                                                                                                                                                  P002RSPU                                                                                                           I00100RS SRSCP              S                                                                                      T999 "
 
         return string_dados
+
+    def realizar_busca_serasa(self, num_documento):
+        data = self._get_request_string(num_documento)
+
+        headers = {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        }
+
+        result = requests.post(
+            self._verificar_url_ambiente(),
+            data=data,
+            headers=headers)
+
+        string_dados = result.text
+
+        self._retorno_original = string_dados

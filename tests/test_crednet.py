@@ -1,6 +1,6 @@
 from pytest import fixture
 
-from .constantes import STRING_CONSULTA_CREDNET
+from .constantes import STRING_CONSULTA_CREDNET, STRING_RETORNO_CREDNET
 from pyserasa3.crednet import Crednet
 
 
@@ -11,14 +11,6 @@ def crednet():
 
 def test_create_crednet_with_login_and_password(crednet):
     assert crednet._login and crednet._password
-
-
-def test_login_must_be_8_numbers(crednet):
-    assert len(crednet._login) == 8
-
-
-def test_password_must_be_8_numbers(crednet):
-    assert len(crednet._password) == 8
 
 
 def test_login_different_from_8_numbers():
@@ -34,3 +26,13 @@ def test_password_different_from_8_numbers():
 def test_get_request_string(crednet):
     num_documento = "12345678901"
     assert crednet._get_request_string(num_documento) == STRING_CONSULTA_CREDNET
+
+
+def test_request_to_serasa(crednet, mocker):
+    mocker.patch(
+        'pyserasa3.crednet.requests.post',
+        return_value=STRING_RETORNO_CREDNET
+    )
+    num_documento = "12345678901"
+    crednet.realizar_busca_serasa(num_documento)
+    assert crednet._retorno_original == STRING_RETORNO_CREDNET.text
