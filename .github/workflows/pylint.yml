@@ -1,6 +1,6 @@
 name: Pylint
 
-on: [push]
+on: [push, pull_request]
 
 jobs:
   build:
@@ -20,4 +20,3 @@ jobs:
     - name: Analysing the code with pylint
       run: |
         pylint pyserasa3/
-        pylint tests/
