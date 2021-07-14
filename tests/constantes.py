@@ -1,6 +1,6 @@
 from collections import namedtuple
 
-STRING_CONSULTA_CREDNET = "p=1234567845678901        B49C      " \
+STRING_REQUEST_CREDNET = "p=1234567845678901        B49C      " \
                           "000012345678901FC     FI                   " \
                           "S99SINIAN                               N          "\
                           "                                                   "\
@@ -15,9 +15,9 @@ STRING_CONSULTA_CREDNET = "p=1234567845678901        B49C      " \
                           "                                                   "\
                           "                T999 "
 
-retorno_crednet_obj = namedtuple('Retorno_Crednet', 'text')
+result_crednet_obj = namedtuple('Retorno_Crednet', 'text')
 
-STRING_RETORNO_CREDNET = retorno_crednet_obj(text="""B49C      000000000000353FC     FI0000200            S99SFIMAN                            SS N                                                                         000000000               00  2014073111041200000016    0017                                                                        0000                    3#
+RESULT_STRING_CREDNET = result_crednet_obj(text="""B49C      000000000000353FC     FI0000200            S99SFIMAN                            SS N                                                                         000000000               00  2014073111041200000016    0017                                                                        0000                    3#
 P002RSPU
 I00100R
 I10501EXISTEM 4 VARIACOES DE GRAFIAS PARA O DOCUMENTO CONSULTADO
