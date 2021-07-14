@@ -8,18 +8,47 @@ on: [push, pull_request]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [
+            "ubuntu-latest",
+        ]
+        python-version: [
+            "pypy-3.7",
+            "pypy-3.6",
+            "3.10-dev",
+            "3.9",
+            "3.8",
+            "3.7",
+            "3.6",
+        ]
+        include:
+          - python-version: "3.6"
+            PYTHONOPTIMIZE: 1
+            REVERSE: "--reverse"
+          - python-version: "3.7"
+            PYTHONOPTIMIZE: 2
+          # Include new variables for Codecov
+          - os: ubuntu-latest
+            codecov-flag: GHA_Ubuntu
+
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.os }} Python ${{ matrix.python-version }}
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python 3.7
+
+    - name: Set up ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
-        python-version: 3.7
+        python-version: ${{ matrix.python-version }}
+
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
+
     - name: Test with pytest
       run: |
         pytest
